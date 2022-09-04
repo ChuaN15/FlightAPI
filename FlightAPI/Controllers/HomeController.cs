@@ -47,5 +47,24 @@ namespace FlightAPI.Controllers
 
             }
         }
+
+        public JsonResult Login(User user)
+        {
+            ent.Configuration.ProxyCreationEnabled = false;
+
+            try
+            {
+                //Select * from User where Email = $Email AND Password = $Password
+                var whichUser = ent.Users.Where(x => x.Email == user.Email &&
+                x.Password == user.Password).FirstOrDefault();
+                return Json(whichUser, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+                return Json("Error: " + e.Message, JsonRequestBehavior.AllowGet);
+
+            }
+        }
     }
 }
