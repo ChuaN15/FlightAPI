@@ -66,5 +66,21 @@ namespace FlightAPI.Controllers
 
             }
         }
+
+        public JsonResult GetAirportList()
+        {
+            ent.Configuration.ProxyCreationEnabled = false;
+
+            try
+            {
+                //Select * From Airport
+                var allAirports = ent.Airports.ToList();
+                return Json(allAirports, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e2)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

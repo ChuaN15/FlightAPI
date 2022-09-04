@@ -4,7 +4,26 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FlightAppDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FlightAppDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="ShortName" />
+          </Key>
+          <Property Name="ShortName" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FlightSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Date" Type="date" />
+          <Property Name="Time" Type="time" Precision="7" />
+          <Property Name="FlightNo" Type="varchar" MaxLength="5" />
+          <Property Name="DepartureAirport" Type="varchar" MaxLength="5" />
+          <Property Name="ArrivalAirport" Type="varchar" MaxLength="5" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Email" />
@@ -16,11 +35,44 @@
           <Property Name="DateOfBirth" Type="date" Nullable="false" />
           <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
+        <Association Name="FK_FlightSchedule_Airport">
+          <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
+          <End Role="FlightSchedule" Type="Self.FlightSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="ShortName" />
+            </Principal>
+            <Dependent Role="FlightSchedule">
+              <PropertyRef Name="DepartureAirport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlightSchedule_Airport1">
+          <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
+          <End Role="FlightSchedule" Type="Self.FlightSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="ShortName" />
+            </Principal>
+            <Dependent Role="FlightSchedule">
+              <PropertyRef Name="ArrivalAirport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FlightAppDBModelStoreContainer">
+          <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FlightSchedule" EntityType="Self.FlightSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FlightSchedule_Airport" Association="Self.FK_FlightSchedule_Airport">
+            <End Role="Airport" EntitySet="Airport" />
+            <End Role="FlightSchedule" EntitySet="FlightSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlightSchedule_Airport1" Association="Self.FK_FlightSchedule_Airport1">
+            <End Role="Airport" EntitySet="Airport" />
+            <End Role="FlightSchedule" EntitySet="FlightSchedule" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FlightAppDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -37,7 +89,64 @@
         </EntityType>
         <EntityContainer Name="FlightAppDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Airports" EntityType="FlightAppDBModel.Airport" />
+          <EntitySet Name="FlightSchedules" EntityType="FlightAppDBModel.FlightSchedule" />
+          <AssociationSet Name="FK_FlightSchedule_Airport" Association="FlightAppDBModel.FK_FlightSchedule_Airport">
+            <End Role="Airport" EntitySet="Airports" />
+            <End Role="FlightSchedule" EntitySet="FlightSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FlightSchedule_Airport1" Association="FlightAppDBModel.FK_FlightSchedule_Airport1">
+            <End Role="Airport" EntitySet="Airports" />
+            <End Role="FlightSchedule" EntitySet="FlightSchedules" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="ShortName" />
+          </Key>
+          <Property Name="ShortName" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FlightSchedules" Relationship="FlightAppDBModel.FK_FlightSchedule_Airport" FromRole="Airport" ToRole="FlightSchedule" />
+          <NavigationProperty Name="FlightSchedules1" Relationship="FlightAppDBModel.FK_FlightSchedule_Airport1" FromRole="Airport" ToRole="FlightSchedule" />
+        </EntityType>
+        <EntityType Name="FlightSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Time" Type="Time" Precision="7" />
+          <Property Name="FlightNo" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="DepartureAirport" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ArrivalAirport" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Airport" Relationship="FlightAppDBModel.FK_FlightSchedule_Airport" FromRole="FlightSchedule" ToRole="Airport" />
+          <NavigationProperty Name="Airport1" Relationship="FlightAppDBModel.FK_FlightSchedule_Airport1" FromRole="FlightSchedule" ToRole="Airport" />
+        </EntityType>
+        <Association Name="FK_FlightSchedule_Airport">
+          <End Type="FlightAppDBModel.Airport" Role="Airport" Multiplicity="0..1" />
+          <End Type="FlightAppDBModel.FlightSchedule" Role="FlightSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="ShortName" />
+            </Principal>
+            <Dependent Role="FlightSchedule">
+              <PropertyRef Name="DepartureAirport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FlightSchedule_Airport1">
+          <End Type="FlightAppDBModel.Airport" Role="Airport" Multiplicity="0..1" />
+          <End Type="FlightAppDBModel.FlightSchedule" Role="FlightSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="ShortName" />
+            </Principal>
+            <Dependent Role="FlightSchedule">
+              <PropertyRef Name="ArrivalAirport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -53,6 +162,27 @@
                 <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Airports">
+            <EntityTypeMapping TypeName="FlightAppDBModel.Airport">
+              <MappingFragment StoreEntitySet="Airport">
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FlightSchedules">
+            <EntityTypeMapping TypeName="FlightAppDBModel.FlightSchedule">
+              <MappingFragment StoreEntitySet="FlightSchedule">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ArrivalAirport" ColumnName="ArrivalAirport" />
+                <ScalarProperty Name="DepartureAirport" ColumnName="DepartureAirport" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
