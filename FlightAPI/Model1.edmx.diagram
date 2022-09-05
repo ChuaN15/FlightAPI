@@ -11,6 +11,7 @@
         <AssociationConnector Association="FlightAppDBModel.FK_FlightSchedule_Airport" />
         <AssociationConnector Association="FlightAppDBModel.FK_FlightSchedule_Airport1" />
         <EntityTypeShape EntityType="FlightAppDBModel.Booking" Width="1.5" PointX="0.75" PointY="3.75" />
+        <AssociationConnector Association="FlightAppDBModel.FK_Booking_FlightSchedule" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

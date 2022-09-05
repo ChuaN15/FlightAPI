@@ -19,5 +19,7 @@ namespace FlightAPI
         public decimal Amount { get; set; }
         public int FlightScheduleID { get; set; }
         public int PassengerCount { get; set; }
+    
+        public virtual FlightSchedule FlightSchedule { get; set; }
     }
 }

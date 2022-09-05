@@ -110,6 +110,7 @@ namespace FlightAPI.Controllers
                     else if (request.CabinType == "Economy")
                         calculatedPrice = (double)allSchedules[i].Price * 1;
 
+                    allSchedules[i].Price = (decimal)calculatedPrice;
                     allSchedules[i].DisplayPrice += (calculatedPrice * request.Passenger).ToString(".00");
 
                     allSchedules[i].DisplayPassengerAmount = "for " + request.Passenger.ToString() + " guest";
@@ -155,6 +156,23 @@ namespace FlightAPI.Controllers
             {
                 ent.Bookings.Add(booking);
                 ent.SaveChanges();
+                return Json("Booking added Successfully", JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+                return Json("Error: " + e.Message, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public JsonResult GetUserBooking(string email)
+        {
+            ent.Configuration.ProxyCreationEnabled = false;
+
+            try
+            {
+                var allBooking = ent.Bookings.Where(x => x.Email == email);
                 return Json("Booking added Successfully", JsonRequestBehavior.AllowGet);
 
             }
