@@ -12,6 +12,16 @@
           <Property Name="ShortName" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="City" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="FlightScheduleID" Type="int" Nullable="false" />
+          <Property Name="PassengerCount" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="FlightSchedule">
           <Key>
             <PropertyRef Name="ID" />
@@ -61,6 +71,7 @@
         </Association>
         <EntityContainer Name="FlightAppDBModelStoreContainer">
           <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightSchedule" EntityType="Self.FlightSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_FlightSchedule_Airport" Association="Self.FK_FlightSchedule_Airport">
@@ -99,6 +110,7 @@
             <End Role="Airport" EntitySet="Airports" />
             <End Role="FlightSchedule" EntitySet="FlightSchedules" />
           </AssociationSet>
+          <EntitySet Name="Bookings" EntityType="FlightAppDBModel.Booking" />
         </EntityContainer>
         <EntityType Name="Airport">
           <Key>
@@ -147,6 +159,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="FlightScheduleID" Type="Int32" Nullable="false" />
+          <Property Name="PassengerCount" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -183,6 +205,17 @@
                 <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bookings">
+            <EntityTypeMapping TypeName="FlightAppDBModel.Booking">
+              <MappingFragment StoreEntitySet="Booking">
+                <ScalarProperty Name="PassengerCount" ColumnName="PassengerCount" />
+                <ScalarProperty Name="FlightScheduleID" ColumnName="FlightScheduleID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

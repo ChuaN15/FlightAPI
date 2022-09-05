@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="FlightAppDBModel.FlightSchedule" Width="1.5" PointX="5.625" PointY="1" />
         <AssociationConnector Association="FlightAppDBModel.FK_FlightSchedule_Airport" />
         <AssociationConnector Association="FlightAppDBModel.FK_FlightSchedule_Airport1" />
+        <EntityTypeShape EntityType="FlightAppDBModel.Booking" Width="1.5" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -28,5 +28,6 @@ namespace FlightAPI
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<FlightSchedule> FlightSchedules { get; set; }
+        public virtual DbSet<Booking> Bookings { get; set; }
     }
 }

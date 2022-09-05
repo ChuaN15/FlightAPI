@@ -146,5 +146,23 @@ namespace FlightAPI.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult Booking(Booking booking)
+        {
+            ent.Configuration.ProxyCreationEnabled = false;
+
+            try
+            {
+                ent.Bookings.Add(booking);
+                ent.SaveChanges();
+                return Json("Booking added Successfully", JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+                return Json("Error: " + e.Message, JsonRequestBehavior.AllowGet);
+
+            }
+        }
     }
 }
