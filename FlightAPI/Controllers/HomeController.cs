@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -76,6 +77,44 @@ namespace FlightAPI.Controllers
                 //Select * From Airport
                 var allAirports = ent.Airports.ToList();
                 return Json(allAirports, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e2)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetDepartureSchedules(FlightRequest request)
+        {
+            ent.Configuration.ProxyCreationEnabled = false;
+
+            try
+            {
+                var allSchedules = ent.FlightSchedules.ToList();
+                allSchedules = allSchedules.Where(x => x.DepartureAirport == request.Departure
+                && x.ArrivalAirport == request.Arrival
+                && x.Date == request.StartDate).ToList();
+
+                return Json(allSchedules, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e2)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetArrivalSchedules(FlightRequest request)
+        {
+            ent.Configuration.ProxyCreationEnabled = false;
+
+            try
+            {
+                var allSchedules = ent.FlightSchedules.ToList();
+                allSchedules = allSchedules.Where(x => x.DepartureAirport == request.Arrival
+                && x.ArrivalAirport == request.Departure
+                && x.Date == request.EndDate).ToList();
+
+                return Json(allSchedules, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e2)
             {
