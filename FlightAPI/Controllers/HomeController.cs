@@ -172,8 +172,9 @@ namespace FlightAPI.Controllers
 
             try
             {
-                var allBooking = ent.Bookings.Where(x => x.Email == email);
-                return Json("Booking added Successfully", JsonRequestBehavior.AllowGet);
+                var allBooking = ent.Bookings.Where(x => x.Email == email).ToList();
+
+                return Json(allBooking, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception e)

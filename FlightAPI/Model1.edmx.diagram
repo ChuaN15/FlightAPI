@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="20583f219fc2469f86ca11bcb6697074" Name="Diagram1">
-        <EntityTypeShape EntityType="FlightAppDBModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlightAppDBModel.Airport" Width="1.5" PointX="3.375" PointY="1.5" />
-        <EntityTypeShape EntityType="FlightAppDBModel.FlightSchedule" Width="1.5" PointX="5.625" PointY="1" />
+        <EntityTypeShape EntityType="FlightAppDBModel.Airport" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="FlightAppDBModel.Booking" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="FlightAppDBModel.FlightSchedule" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="FlightAppDBModel.User" Width="1.5" PointX="0.75" PointY="4.75" />
         <AssociationConnector Association="FlightAppDBModel.FK_FlightSchedule_Airport" />
         <AssociationConnector Association="FlightAppDBModel.FK_FlightSchedule_Airport1" />
-        <EntityTypeShape EntityType="FlightAppDBModel.Booking" Width="1.5" PointX="0.75" PointY="3.75" />
         <AssociationConnector Association="FlightAppDBModel.FK_Booking_FlightSchedule" />
       </Diagram>
     </edmx:Diagrams>
