@@ -21,7 +21,11 @@ namespace FlightAPI
         public string ArrivalAirport { get; set; }
         public Nullable<decimal> Price { get; set; }
         public int ID { get; set; }
-    
+
+        public string DisplayTime { get; set; }
+        public string DisplayPrice { get; set; }
+        public string DisplayPassengerAmount { get; set; }
+
         public virtual Airport Airport { get; set; }
         public virtual Airport Airport1 { get; set; }
     }

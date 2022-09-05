@@ -93,7 +93,27 @@ namespace FlightAPI.Controllers
                 var allSchedules = ent.FlightSchedules.ToList();
                 allSchedules = allSchedules.Where(x => x.DepartureAirport == request.Departure
                 && x.ArrivalAirport == request.Arrival
-                && x.Date == request.StartDate).ToList();
+                && x.Date == request.StartDate.Date).ToList();
+
+                for (int i = 0; i < allSchedules.Count; i++)
+                {
+                    allSchedules[i].DisplayTime = allSchedules[i].Time.Value.Hours + ":" +
+                        allSchedules[i].Time.Value.Minutes;
+
+                    allSchedules[i].DisplayPrice = "MYR ";
+
+                    double calculatedPrice = 0;
+                    if (request.CabinType == "First Class")
+                        calculatedPrice = (double)allSchedules[i].Price * 1.8;
+                    else if(request.CabinType == "Business")
+                        calculatedPrice = (double)allSchedules[i].Price * 1.35;
+                    else if (request.CabinType == "Economy")
+                        calculatedPrice = (double)allSchedules[i].Price * 1;
+
+                    allSchedules[i].DisplayPrice += (calculatedPrice * request.Passenger).ToString(".00");
+
+                    allSchedules[i].DisplayPassengerAmount = "for " + request.Passenger.ToString() + " guest";
+                }
 
                 return Json(allSchedules, JsonRequestBehavior.AllowGet);
             }
@@ -110,6 +130,11 @@ namespace FlightAPI.Controllers
             try
             {
                 var allSchedules = ent.FlightSchedules.ToList();
+
+                //Select * from FlightSchedule Where DepartureAirport = $request.Arrival AND
+                //ArrivalAirport = $request.Departure AND
+                //Date = $request.EndDate
+
                 allSchedules = allSchedules.Where(x => x.DepartureAirport == request.Arrival
                 && x.ArrivalAirport == request.Departure
                 && x.Date == request.EndDate).ToList();
